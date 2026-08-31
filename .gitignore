@@ -1,0 +1,43 @@
+# ============================================================
+# HIVESight - .gitignore
+# ============================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+
+# --- Customer / diagnostic log data (DO NOT COMMIT) ---
+# Raw Cloudera diagnostic bundles and any extracted contents.
+*.zip
+QUASAR_DIAG_LOGS*/
+extracted_diag_bundles/
+diag_bundle_reports/
+
+# Sample / test logs (large, may contain hostnames, IPs, PII)
+Tests/
+data/logs/
+*.log
+*.log.out
+*.out
+
+# --- Generated knowledge base (rebuilt via run_phase1.py) ---
+# metadata.json embeds raw log content, so it is excluded.
+index/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

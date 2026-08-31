@@ -1,0 +1,133 @@
+# ============================================================
+# HIVE LOG ANALYZER - PHASE 1 CONFIG
+# ============================================================
+
+logs:
+  input_dir: "data/logs"
+  files:
+    - path: "cat1_baseline_hs2.log"
+      source: "HS2"
+      category: "BASELINE"
+      failure_stage: "NONE"
+
+    - path: "cat2_compilation_hs2.log"
+      source: "HS2"
+      category: "COMPILATION"
+      failure_stage: "COMPILATION"
+
+    - path: "cat3_hms_hs2.log"
+      source: "HS2"
+      category: "HMS_LOOKUP"
+      failure_stage: "HMS_LOOKUP"
+
+    - path: "cat3_hms_metastore.log"
+      source: "HMS"
+      category: "HMS_LOOKUP"
+      failure_stage: "HMS_LOOKUP"
+
+    - path: "cat4_execution_hs2.log"
+      source: "HS2"
+      category: "EXECUTION"
+      failure_stage: "EXECUTION"
+
+    - path: "cat5_concurrency_hs2.log"
+      source: "HS2"
+      category: "CONCURRENCY"
+      failure_stage: "EXECUTION"
+
+    - path: "cat6_cbo_hs2.log"
+      source: "HS2"
+      category: "CBO_OPTIMIZATION"
+      failure_stage: "OPTIMIZATION"
+
+    - path: "cat6_large_tables_hs2.log"
+      source: "HS2"
+      category: "CBO_OPTIMIZATION"
+      failure_stage: "OPTIMIZATION"
+
+    - path: "cat7_tezam_hs2.log"
+      source: "HS2"
+      category: "TEZ_AM"
+      failure_stage: "DAG_SUBMISSION"
+
+prefilter:
+  # Log levels to keep
+  levels: ["WARN", "ERROR", "FATAL"]
+  # Lines before each matching line (stack trace context)
+  context_before: 10
+  # Lines after each matching line (stack trace continuation)
+  context_after: 5
+  # Patterns to discard even if WARN/ERROR level (pure noise)
+  noise_patterns:
+    - "Processing compaction request null"
+    - "hive.metastore.acidmetrics.ext.on does not exist"
+    - "hive.metastore.runworker.in does not exist"
+    - "hive.cluster.id does not exist"
+    - "hive.internal.ss.authz.settings.applied.marker"
+    - "hive.metastore.housekeeping.threads.on does not exist"
+    - "HiveConf of name hive.metastore"
+    - "No Tez VCore size specified"
+    - "Skip adding 'tez.application.tags'"
+    - "Skip adding 'tez.am.launch.env'"
+    - "KeyGenerator was already initialized"
+    - "SecretKey was already initialized"
+    - "UDF Class.*does not have description"
+    - "Cannot retrieve Table Constraints info for table : _dummy_table"
+    - "_dummy_database"
+    - "_dummy_table"
+    - "Falling back to MapReduce container VCores"
+    - "Failed to register udf functions"
+    - "Unable to load all Impala functions"
+
+chunking:
+  # Target chunk size in tokens (approximate via word count * 1.3)
+  min_tokens: 300
+  max_tokens: 500
+  # Overlap between adjacent chunks
+  overlap_tokens: 50
+
+embedding:
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  # 384-dimensional vectors
+  vector_dim: 384
+  # Batch size for embedding generation
+  batch_size: 32
+  # Cache embeddings to avoid recomputing
+  cache_embeddings: true
+
+index:
+  output_dir: "index"
+  faiss_index_file: "faiss.index"
+  metadata_file: "metadata.json"
+  # IndexFlatL2 for exact search (suitable for prototype scale)
+  index_type: "IndexFlatL2"
+
+vector_store:
+  # Set to "opensearch" to use OpenSearch vector retrieval.
+  # Keep FAISS available for baseline comparison during migration.
+  backend: "opensearch"
+  also_write_faiss: true
+  fallback_to_faiss: true
+  opensearch:
+    host: "http://localhost:9200"
+    index_name: "hivesight-log-chunks"
+    username:
+    password:
+    verify_certs: false
+    timeout: 30
+    batch_size: 500
+
+llm:
+  provider: "ollama"
+  model: "llama3.2"
+  base_url: "http://localhost:11434"
+  max_tokens: 1000
+  temperature: 0.1
+
+retrieval:
+  top_k: 5
+  # Retrieve this many vector candidates before applying HiveSight's
+  # metadata/category-aware reranker. Selected from the 10-incident
+  # candidate-depth validation where 80 reached 10/10 Top-5 hits.
+  candidate_depth: 80
+  min_score_threshold: 0.0
