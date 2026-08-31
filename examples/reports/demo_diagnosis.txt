@@ -1,0 +1,170 @@
+
+============================================================
+HIVE LOG MULTI-QUERY DIAGNOSIS
+============================================================
+
+LOG FILE: Tests/hiveserver2.log
+FAILED QUERIES FOUND: 19
+QUERIES DIAGNOSED: 10
+
+------------------------------------------------------------
+[1] QUERY ID: hive_20260504121608_794bc61e
+FAILURE STAGE: COMPILATION
+CONFIDENCE: HIGH
+ERROR CLASS: ParseException
+
+ROOT CAUSE:
+The query failed during SQL parsing because Hive could not recognize the submitted statement syntax.
+
+KEY EVIDENCE:
+2026-05-04 12:16:08,180 ERROR org.apache.hadoop.hive.ql.Driver: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: FAILED: ParseException line 1:56 cannot recognize input near 'date' 'string' ',' in column name or constraint
+
+RETRIEVED EVIDENCE (1 chunks):
+  [1] hiveserver2.log | COMPILATION | ERROR
+      Query ID: hive_20260504121608_794bc61e
+------------------------------------------------------------
+[2] QUERY ID: hive_20260504121625_559c2a33
+FAILURE STAGE: COMPILATION
+CONFIDENCE: HIGH
+ERROR CLASS: ParseException
+
+ROOT CAUSE:
+The query failed during SQL parsing because Hive could not recognize the submitted statement syntax.
+
+KEY EVIDENCE:
+2026-05-04 12:16:25,710 ERROR org.apache.hadoop.hive.ql.Driver: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: FAILED: ParseException line 1:56 cannot recognize input near 'Date' 'string' ',' in column name or constraint
+
+RETRIEVED EVIDENCE (1 chunks):
+  [1] hiveserver2.log | COMPILATION | ERROR
+      Query ID: hive_20260504121625_559c2a33
+------------------------------------------------------------
+[3] QUERY ID: hive_20260504121701_d241c064
+FAILURE STAGE: HMS_LOOKUP
+CONFIDENCE: HIGH
+ERROR CLASS: InvalidTableException
+
+ROOT CAUSE:
+The query failed due to a missing table, 'product_sales', which is not found in the metadata. This error occurred during both compilation (SemanticException) and metadata lookup (HMS_LOOKUP).
+
+KEY EVIDENCE:
+2026-05-04 12:17:01,601 ERROR hive.ql.metadata.Hive: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: Table sample.product_sales not found: hive.sample.product_sales table not found
+
+RETRIEVED EVIDENCE (2 chunks):
+  [1] hiveserver2.log | HMS_LOOKUP | ERROR
+      Query ID: hive_20260504121701_d241c064
+  [2] hiveserver2.log | HMS_LOOKUP | ERROR
+      Query ID: hive_20260504121701_d241c064
+------------------------------------------------------------
+[4] QUERY ID: hive_20260504121709_9c81e98d
+FAILURE STAGE: HMS_LOOKUP
+CONFIDENCE: HIGH
+ERROR CLASS: InvalidTableException
+
+ROOT CAUSE:
+The query failed during compilation due to a missing table, 'product_sales', which was not found in the metastore. This error occurred during semantic analysis.
+
+KEY EVIDENCE:
+2026-05-04 12:17:09,423 ERROR hive.ql.metadata.Hive: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: Table sample.product_sales not found: hive.sample.product_sales table not found
+
+RETRIEVED EVIDENCE (2 chunks):
+  [1] hiveserver2.log | HMS_LOOKUP | ERROR
+      Query ID: hive_20260504121709_9c81e98d
+  [2] hiveserver2.log | HMS_LOOKUP | ERROR
+      Query ID: hive_20260504121709_9c81e98d
+------------------------------------------------------------
+[5] QUERY ID: hive_20260504122137_de13438b
+FAILURE STAGE: COMPILATION
+CONFIDENCE: HIGH
+ERROR CLASS: ParseException
+
+ROOT CAUSE:
+The query failed during SQL parsing because Hive could not recognize the submitted statement syntax.
+
+KEY EVIDENCE:
+2026-05-04 12:21:37,392 ERROR org.apache.hadoop.hive.ql.Driver: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: FAILED: ParseException line 1:5 cannot recognize input near 'drop' 'prodt_sales' '<EOF>' in ddl statement
+
+RETRIEVED EVIDENCE (1 chunks):
+  [1] hiveserver2.log | COMPILATION | ERROR
+      Query ID: hive_20260504122137_de13438b
+------------------------------------------------------------
+[6] QUERY ID: hive_20260504122148_bbfae398
+FAILURE STAGE: COMPILATION
+CONFIDENCE: HIGH
+ERROR CLASS: ParseException
+
+ROOT CAUSE:
+The query failed during SQL parsing because Hive could not recognize the submitted statement syntax.
+
+KEY EVIDENCE:
+2026-05-04 12:21:48,666 ERROR org.apache.hadoop.hive.ql.Driver: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: FAILED: ParseException line 1:5 cannot recognize input near 'drop' 'produt_sales' '<EOF>' in ddl statement
+
+RETRIEVED EVIDENCE (1 chunks):
+  [1] hiveserver2.log | COMPILATION | ERROR
+      Query ID: hive_20260504122148_bbfae398
+------------------------------------------------------------
+[7] QUERY ID: hive_20260504122207_b5543fe9
+FAILURE STAGE: COMPILATION
+CONFIDENCE: HIGH
+ERROR CLASS: CommandUsageError
+
+ROOT CAUSE:
+The query failed because the Hive delete resource command was used without the required FILE, JAR, or ARCHIVE argument.
+
+KEY EVIDENCE:
+2026-05-04 12:22:07,644 ERROR org.apache.hadoop.hive.ql.processors.DeleteResourceProcessor: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: Usage: delete [FILE|JAR|ARCHIVE] <value> [<value>]*
+
+RETRIEVED EVIDENCE (2 chunks):
+  [1] hiveserver2.log | COMPILATION | ERROR
+      Query ID: hive_20260504122207_b5543fe9
+  [2] hiveserver2.log | COMPILATION | WARN
+      Query ID: hive_20260504122207_b5543fe9
+------------------------------------------------------------
+[8] QUERY ID: hive_20260504122325_75aacd71
+FAILURE STAGE: COMPILATION
+CONFIDENCE: HIGH
+ERROR CLASS: ParseException
+
+ROOT CAUSE:
+The query failed during SQL parsing because Hive could not recognize the submitted statement syntax.
+
+KEY EVIDENCE:
+2026-05-04 12:23:25,086 ERROR org.apache.hadoop.hive.ql.Driver: [0198ede8-c393-4c5e-a98e-d01169b90010 HiveServer2-Handler-Pool: Thread-138]: FAILED: ParseException line 2:0 missing EOF at 'select' near 'product_salesl'
+
+RETRIEVED EVIDENCE (1 chunks):
+  [1] hiveserver2.log | COMPILATION | ERROR
+      Query ID: hive_20260504122325_75aacd71
+------------------------------------------------------------
+[9] QUERY ID: hive_20260504163515_848e4914
+FAILURE STAGE: COMPILATION
+CONFIDENCE: HIGH
+ERROR CLASS: ParseException
+
+ROOT CAUSE:
+The query failed during SQL parsing because Hive could not recognize the submitted statement syntax.
+
+KEY EVIDENCE:
+2026-05-04 16:35:15,465 ERROR org.apache.hadoop.hive.ql.Driver: [de32c2c0-a7b5-4719-aecd-fea6cbfdc995 HiveServer2-Handler-Pool: Thread-2233]: FAILED: ParseException line 1:5 cannot recognize input near 'show' 'databaes' '<EOF>' in ddl statement
+
+RETRIEVED EVIDENCE (1 chunks):
+  [1] hiveserver2.log | COMPILATION | ERROR
+      Query ID: hive_20260504163515_848e4914
+------------------------------------------------------------
+[10] QUERY ID: hive_20260508070558_d0985c79
+FAILURE STAGE: EXECUTION
+CONFIDENCE: HIGH
+ERROR CLASS: HiveException
+
+ROOT CAUSE:
+The DDL operation failed during execution because Hive does not allow converting an ACID table to non-ACID.
+
+KEY EVIDENCE:
+2026-05-08 07:05:58,470 ERROR org.apache.hadoop.hive.ql.Driver: [HiveServer2-Background-Pool: Thread-29032]: FAILED: Execution Error, return code 40000 from org.apache.hadoop.hive.ql.ddl.DDLTask. Cannot convert an ACID table to non-ACID
+
+RETRIEVED EVIDENCE (3 chunks):
+  [1] hiveserver2.log | EXECUTION | ERROR
+      Query ID: hive_20260508070558_d0985c79
+  [2] hiveserver2.log | EXECUTION | ERROR
+      Query ID: hive_20260508070558_d0985c79
+  [3] hiveserver2.log | EXECUTION | ERROR
+      Query ID: hive_20260508070558_d0985c79
+============================================================
